@@ -1,0 +1,29 @@
+name: kroozer
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter_wallpaper_manager: ^0.0.4
+  path_provider: ^2.1.2
+  flutter_file_downloader: ^1.2.1
+  http: ^1.2.1
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+ android: true
+ ios: true
+ image_path: "Assets/Kroozer.png"
+
+flutter:
+  uses-material-design: true
