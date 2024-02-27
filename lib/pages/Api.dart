@@ -22,30 +22,22 @@ String artist = "SOM2KROOZ";
 var wallpaperLoc = null;
 
 String tag = "SOM KROOZ";
+bool? api = false;
+bool? nsfw = false;
 String description = "krooz is just good";
 String imgPath =
     "/storage/emulated/0/Android/data/com.example.kroozer/files/waifu.jpeg";
 
 bool loading = true;
 
-T getRandomElement<T>(List<T> list) {
-  final random = Random();
-  var i = random.nextInt(list.length);
-  return list[i];
-}
-
 class _KroozerState extends State<Kroozer> {
   @override
   Widget build(BuildContext context) {
-    Future<void> fetchWaifuImage() async {
-      setState(() {
-        loading = false;
-      });
-
+    void WaifuAPi() async {
       final parameters = {
         'orientation': 'portrait',
         'gif': 'false',
-        'is_nsfw': 'false',
+        'is_nsfw': "$nsfw",
       };
       final uri = Uri.http("api.waifu.im", "/search", parameters);
       final response = await http.get(uri);
@@ -63,6 +55,34 @@ class _KroozerState extends State<Kroozer> {
         }
         loading = true;
       });
+    }
+
+    void AnotherAPi() async {
+      setState(() {
+        loading = false;
+      });
+      final uri = Uri.http("pic.re", "image.json");
+      final response = await http.get(uri);
+      final Map<String, dynamic> data = jsonDecode(response.body);
+
+      setState(() {
+        url = "https://${data['file_url']}";
+        tag = data['tags'][0].toString().toUpperCase();
+        description = data['tags'].toString().toUpperCase();
+
+        data["author"] == null
+            ? artist = "KROOZ"
+            : artist = data["author"].toString().toUpperCase();
+
+        loading = true;
+      });
+    }
+
+    Future<void> fetchWaifuImage() async {
+      setState(() {
+        loading = false;
+      });
+      api == true ? AnotherAPi() : WaifuAPi();
     }
 
     void getData() async {
@@ -152,7 +172,7 @@ class _KroozerState extends State<Kroozer> {
                           style: TextStyle(color: Colors.white),
                         )),
                     const SizedBox(
-                      height: 10,
+                      height: 0,
                     ),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -178,7 +198,7 @@ class _KroozerState extends State<Kroozer> {
                           style: TextStyle(color: Colors.white),
                         )),
                     const SizedBox(
-                      height: 10,
+                      height: 0,
                     ),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -201,10 +221,61 @@ class _KroozerState extends State<Kroozer> {
                         child: const Text(
                           "Both",
                           style: TextStyle(color: Colors.white),
-                        )),
+                        ))
                   ],
                 ),
               ));
+    }
+
+    Future cool(BuildContext context) {
+      return showModalBottomSheet(
+          context: context,
+          backgroundColor: const Color.fromARGB(245, 37, 37, 37),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+          builder: (BuildContext context) {
+            return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Container(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CheckboxListTile(
+                        title: const Text(
+                          "NSFW(works with Api-1)",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        value: nsfw,
+                        controlAffinity: ListTileControlAffinity.leading,
+                        onChanged: (value) => {
+                          setState(() {
+                            nsfw = value;
+                          })
+                        },
+                      ),
+                      CheckboxListTile(
+                        title: const Text(
+                          "API-2",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        value: api,
+                        controlAffinity: ListTileControlAffinity.leading,
+                        onChanged: (value) => {
+                          setState(() {
+                            api = value;
+                          })
+                        },
+                      )
+                    ],
+                  ),
+                );
+              },
+            );
+          });
     }
 
     return Scaffold(
@@ -249,6 +320,7 @@ class _KroozerState extends State<Kroozer> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
+
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
                   child: ClipRRect(
@@ -330,12 +402,24 @@ class _KroozerState extends State<Kroozer> {
                                 backgroundColor:
                                     const Color.fromARGB(255, 17, 17, 17)),
                             onPressed: () {
+                              cool(context);
+                            },
+                            child: const Icon(
+                              /////Dev -----Butn
+                              Icons.developer_board_off,
+                              color: Colors.white,
+                            )),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 17, 17, 17)),
+                            onPressed: () {
                               displayButtom(context);
                             },
                             child: const Icon(
                               Icons.add,
                               color: Colors.white,
-                            ))
+                            )),
                       ],
                     )
                   ],
