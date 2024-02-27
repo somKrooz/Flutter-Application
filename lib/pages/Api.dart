@@ -253,7 +253,8 @@ class _KroozerState extends State<Kroozer> {
                         onChanged: (value) => {
                           setState(() {
                             nsfw = value;
-                          })
+                          }),
+                          Navigator.pop(context)
                         },
                       ),
                       CheckboxListTile(
@@ -267,7 +268,8 @@ class _KroozerState extends State<Kroozer> {
                         onChanged: (value) => {
                           setState(() {
                             api = value;
-                          })
+                          }),
+                          Navigator.pop(context)
                         },
                       )
                     ],
@@ -406,7 +408,7 @@ class _KroozerState extends State<Kroozer> {
                             },
                             child: const Icon(
                               /////Dev -----Butn
-                              Icons.developer_board_off,
+                              Icons.developer_mode_rounded,
                               color: Colors.white,
                             )),
                         ElevatedButton(
