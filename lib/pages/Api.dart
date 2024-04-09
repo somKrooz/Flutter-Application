@@ -17,7 +17,8 @@ class Kroozer extends StatefulWidget {
   State<Kroozer> createState() => _KroozerState();
 }
 
-String url = "https://cdn.waifu.im/4380.jpeg";
+String url =
+    "https://c4.wallpaperflare.com/wallpaper/797/173/143/anime-anime-girls-maid-maid-outfit-vertical-hd-wallpaper-preview.jpg";
 String artist = "SOM2KROOZ";
 var wallpaperLoc = null;
 
@@ -35,7 +36,8 @@ class _KroozerState extends State<Kroozer> {
   Widget build(BuildContext context) {
     void WaifuAPi() async {
       final parameters = {
-        'orientation': 'portrait',
+        'Accept-Version': 'v5',
+        'height': '>=2000',
         'gif': 'false',
         'is_nsfw': "$nsfw",
       };
@@ -242,20 +244,20 @@ class _KroozerState extends State<Kroozer> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      CheckboxListTile(
-                        title: const Text(
-                          "NSFW(works with Api-1)",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        value: nsfw,
-                        controlAffinity: ListTileControlAffinity.leading,
-                        onChanged: (value) => {
-                          setState(() {
-                            nsfw = value;
-                          })
-                        },
-                      ),
+                      // CheckboxListTile(
+                      //   title: const Text(
+                      //     "NSFW(works with Api-1)",
+                      //     style: TextStyle(
+                      //         color: Colors.white, fontWeight: FontWeight.bold),
+                      //   ),
+                      //   value: nsfw,
+                      //   controlAffinity: ListTileControlAffinity.leading,
+                      //   onChanged: (value) => {
+                      //     setState(() {
+                      //       nsfw = value;
+                      //     })
+                      //   },
+                      // ),
                       CheckboxListTile(
                         title: const Text(
                           "API-2",
@@ -354,12 +356,17 @@ class _KroozerState extends State<Kroozer> {
                           )
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Center(
-                              child: Image.network(
-                                "https://i.gifer.com/Paw.gif",
-                                scale: 3,
-                              ),
-                            ),
+                            child: const Center(
+                                child: CircularProgressIndicator(
+                              color: Colors.amber,
+                              backgroundColor: Color.fromARGB(255, 29, 29, 29),
+                              strokeWidth: 5,
+                            )
+                                // Image.network(
+                                //   "https://media1.tenor.com/m/V_0ti1a3_GoAAAAC/loading-azurlane.gif",
+                                //   scale: 3,
+                                // ),
+                                ),
                           )),
                 Column(
                   children: [
